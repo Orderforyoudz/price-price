@@ -1,35 +1,67 @@
-const exchangeRate = 250;
-const fixedCommission = 250;
-const percentageRate = 10;
+let rate = 250; // سعر الدولار
+let commissionPercent = 0.10; // 10%
+let shippingPerKg = 10;
 
 function calculateFinal(){
 
-const usd = parseFloat(document.getElementById("usdPrice").value);
+let usd = document.getElementById("usdPrice").value;
+let weight = document.getElementById("weight").value;
 
-const result = document.getElementById("result");
+if(!usd){
 
-if(isNaN(usd)){
-
-result.innerHTML = "أدخل السعر بالدولار";
+document.getElementById("result").innerHTML =
+"أدخل السعر";
 
 return;
 
 }
 
-const priceDZD = usd * exchangeRate;
+let productDZD = usd * rate;
 
-let total;
+let shipping = (weight || 0) * shippingPerKg * rate;
 
+let commissionValue;
+
+// اذا كان السعر أقل من 10$
 if(usd < 10){
 
-total = priceDZD + fixedCommission;
+commissionValue = 250;
 
 }else{
 
-total = priceDZD * (1 + percentageRate / 100);
+commissionValue = productDZD * commissionPercent;
 
 }
 
-result.innerHTML = "السعر النهائي: " + total.toLocaleString() + " دج";
+let final =
+productDZD + shipping + commissionValue;
+
+document.getElementById("result").innerHTML =
+final.toFixed(0) + " دج";
+
+document.getElementById("details").innerHTML =
+`
+سعر المنتج: ${productDZD.toFixed(0)} دج <br>
+الشحن: ${shipping.toFixed(0)} دج
+`;
+
+}
+
+function copyPrice(){
+
+let text = document.getElementById("result").innerText;
+
+navigator.clipboard.writeText(text);
+
+alert("تم نسخ السعر");
+
+}
+
+function resetCalc(){
+
+document.getElementById("usdPrice").value="";
+document.getElementById("weight").value="";
+document.getElementById("result").innerHTML="أدخل المعلومات";
+document.getElementById("details").innerHTML="";
 
 }
