@@ -8,10 +8,97 @@
 <title>OrderForYouDZ</title>
 
 <link rel="stylesheet" href="style.css">
-
 <link rel="manifest" href="manifest.json">
 
 <meta name="theme-color" content="#2c3e50">
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+
+<!-- Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+body{
+font-family:'Cairo',sans-serif;
+background:linear-gradient(135deg,#2c3e50,#34495e);
+margin:0;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+color:white;
+}
+
+.container{
+background:#1f2a38;
+padding:30px;
+border-radius:15px;
+text-align:center;
+width:320px;
+box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+
+.logo{
+width:90px;
+margin-bottom:10px;
+}
+
+h1{
+margin:5px;
+}
+
+input{
+width:100%;
+padding:12px;
+border:none;
+border-radius:8px;
+margin-top:15px;
+font-size:16px;
+text-align:center;
+}
+
+.result{
+margin-top:20px;
+padding:15px;
+background:#2c3e50;
+border-radius:10px;
+font-size:18px;
+}
+
+.buttons{
+margin-top:15px;
+display:flex;
+gap:10px;
+}
+
+button{
+flex:1;
+padding:10px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-size:15px;
+}
+
+.copy{
+background:#27ae60;
+color:white;
+}
+
+.reset{
+background:#e74c3c;
+color:white;
+}
+
+.details{
+margin-top:15px;
+font-size:14px;
+color:#bbb;
+}
+
+</style>
 
 </head>
 
@@ -21,7 +108,7 @@
 
 <img src="logo.png" class="logo">
 
-<h1>OrderForYouDZ</h1>
+<h1><i class="fa-solid fa-cart-shopping"></i> OrderForYouDZ</h1>
 
 <p>احسب السعر النهائي للمنتج بالدينار الجزائري</p>
 
@@ -36,11 +123,59 @@ oninput="calculateFinal()"
 أدخل السعر بالدولار
 </div>
 
+<div class="details" id="details"></div>
+
+<div class="buttons">
+<button class="copy" onclick="copyPrice()">
+<i class="fa-solid fa-copy"></i> نسخ
+</button>
+
+<button class="reset" onclick="resetCalc()">
+<i class="fa-solid fa-rotate"></i> إعادة
+</button>
 </div>
 
-<script src="script.js"></script>
+</div>
 
 <script>
+
+let rate = 240; 
+let tax = 0.05;
+
+function calculateFinal(){
+
+let usd = document.getElementById("usdPrice").value;
+
+if(!usd){
+document.getElementById("result").innerHTML="أدخل السعر بالدولار";
+return;
+}
+
+let dzd = usd * rate;
+let final = dzd + (dzd * tax);
+
+document.getElementById("result").innerHTML =
+final.toFixed(0) + " دج";
+
+document.getElementById("details").innerHTML =
+`
+السعر بالدينار: ${dzd.toFixed(0)} دج <br>
+العمولة: ${(dzd*tax).toFixed(0)} دج
+`;
+
+}
+
+function copyPrice(){
+let text = document.getElementById("result").innerText;
+navigator.clipboard.writeText(text);
+alert("تم نسخ السعر");
+}
+
+function resetCalc(){
+document.getElementById("usdPrice").value="";
+document.getElementById("result").innerHTML="أدخل السعر بالدولار";
+document.getElementById("details").innerHTML="";
+}
 
 if ("serviceWorker" in navigator) {
 navigator.serviceWorker.register("service-worker.js");
