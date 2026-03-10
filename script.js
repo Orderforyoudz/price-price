@@ -41,10 +41,7 @@ let final = dzd + commission;
 document.getElementById("result").innerHTML =
 final.toFixed(0) + " دج";
 
-document.getElementById("details").innerHTML =
-`
-السعر بالدينار: ${dzd.toFixed(0)} دج
-`;
+document.getElementById("details").innerHTML = "";
 
 }
 
@@ -65,3 +62,4 @@ navigator.serviceWorker.register("service-worker.js");
 }
 
 </script>
+
