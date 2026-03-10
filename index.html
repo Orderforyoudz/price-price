@@ -139,8 +139,7 @@ oninput="calculateFinal()"
 
 <script>
 
-let rate = 250; 
-let tax = 0.10;
+let rate = 250;
 
 function calculateFinal(){
 
@@ -152,15 +151,31 @@ return;
 }
 
 let dzd = usd * rate;
-let final = dzd + (dzd * tax);
+
+let commission;
+
+if(usd < 10){
+
+commission = 250;
+
+}else if(usd <= 40){
+
+commission = dzd * 0.10;
+
+}else{
+
+commission = dzd * 0.08;
+
+}
+
+let final = dzd + commission;
 
 document.getElementById("result").innerHTML =
 final.toFixed(0) + " دج";
 
 document.getElementById("details").innerHTML =
 `
-السعر بالدينار: ${dzd.toFixed(0)} دج <br>
-العمولة: ${(dzd*tax).toFixed(0)} دج
+السعر بالدينار: ${dzd.toFixed(0)} دج
 `;
 
 }
@@ -182,6 +197,3 @@ navigator.serviceWorker.register("service-worker.js");
 }
 
 </script>
-
-</body>
-</html>
