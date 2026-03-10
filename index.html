@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>OrderForYouDZ - حاسبة السعر النهائي</title>
+<style>
+body { font-family: Arial; direction: rtl; display:flex; justify-content:center; align-items:center; height:100vh; background:#f0f8ff; margin:0;}
+.calculator { background: url('background.png') no-repeat center center; background-size: cover; padding:30px; border-radius:15px; box-shadow:0 10px 20px rgba(0,0,0,0.15); width:350px; text-align:center;}
+h1 { color:#2c3e50; font-size:28px; margin-bottom:10px;}
+img.logo { width:100px; margin-bottom:15px; border-radius:10px;}
+h2 { margin-bottom:15px; color:#2c3e50;}
+p { color:#34495e; font-size:16px; margin-bottom:20px;}
+input { width:100%; padding:12px; margin:10px 0; border-radius:8px; border:1px solid #ccc; font-size:18px;}
+input:focus { border-color:#ff6b6b; box-shadow:0 0 5px #ff6b6b; outline:none; }
+.result { margin-top:20px; font-size:24px; font-weight:bold; color:#27ae60; background:rgba(224, 255, 224, 0.8); padding:15px; border-radius:10px;}
+</style>
+</head>
+<body>
+<div class="calculator">
+
+<h1>OrderForYouDZ - حاسبة السعر النهائي</h1>
+<img src="logo.png" alt="شعار الموقع" class="logo">
+<p>احسب السعر النهائي للمنتج بسرعة وسهولة بالدينار الجزائري!</p>
+<h2>السعر النهائي للمنتج</h2>
+
+<input type="number" id="usdPrice" placeholder="أدخل السعر بالدولار" oninput="calculateFinal()">
+
+<div class="result" id="result"></div>
+</div>
+
+<script>
+const exchangeRate = 250; // سعر الدولار بالدينار الجزائري
+const fixedCommission = 250; // العمولة الثابتة إذا السعر < 10 دولار
+const percentageRate = 10; // العمولة بالنسبة المئوية إذا السعر >= 10 دولار
+
+function calculateFinal() {
+    const usd = parseFloat(document.getElementById("usdPrice").value);
+    if (isNaN(usd)) {
+        document.getElementById("result").innerHTML = "أدخل السعر بالدولار";
+        return;
+    }
+
+    let total;
+    const priceDZD = usd * exchangeRate;
+
+    if (usd < 10) {
+        total = priceDZD + fixedCommission;
+    } else {
+        total = priceDZD * (1 + percentageRate/100);
+    }
+
+    document.getElementById("result").innerHTML = `السعر النهائي: ${total.toLocaleString()} دج`;
+}
+</script>
+</body>
+</html>
